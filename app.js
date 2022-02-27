@@ -2,7 +2,6 @@
 let $input = $('input');
 let $button = $('button');
 let $ul = $('ul')
-let $todoList = []
 
 //Create Task
 $button.on('click', (e) => {
@@ -11,13 +10,11 @@ $button.on('click', (e) => {
     let $li = $('<li></li>').text($input.val())
     let $checkbox = $('<input type="checkbox" />');
     let $x = $('<span>&times;</span>').addClass('close')
-    let $taskNumber = 0;
 
     //Add Tasks to list
     $ul.append($newTodo)
     $newTodo.append($checkbox, $li, $x);
     $li.addClass('task')
-
 
     //Complete Task Style
     $checkbox.click(function() {
@@ -32,15 +29,6 @@ $button.on('click', (e) => {
         }
     });
 
-
-
-    console.log($todoList)
-
-    localStorage.setItem("task", JSON.stringify($todoList));
-
-
-
-
     //Clear input field
     $input.val("")
 
@@ -54,8 +42,13 @@ $button.on('click', (e) => {
 
 //Working on adding local storage  *Still figuring this out lol * 
 //Push Task to todoList array for Local Storage
+//let $todoList = []
+//let $taskNumber = 0;
+
+
 //  $todoList.push({
 //     id: $taskNumber,
 //     task: $li.text(),
 //     completed: $checkbox.val()
 // })
+//localStorage.setItem("task", JSON.stringify($todoList));
