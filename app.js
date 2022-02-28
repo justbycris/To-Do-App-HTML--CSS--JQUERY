@@ -2,30 +2,39 @@
 let $input = $('input');
 let $button = $('button');
 let $ul = $('ul')
+let $error = $('#error-message');
+
+
 
 //Create Task
 $button.on('click', (e) => {
     //Create a li element
     let $newTodo = $('<div></div>').addClass('todo')
     let $li = $('<li></li>').text($input.val())
-    let $checkbox = $('<input type="checkbox" />');
+    let $checkbox = $('<input type="checkbox" class="box" />');
     let $x = $('<span>&times;</span>').addClass('close')
 
-    //Add Tasks to list
-    $ul.append($newTodo)
-    $newTodo.append($checkbox, $li, $x);
-    $li.addClass('task')
+    //If input is empty, show error message
+    if ($input.val() == 0) {
+        $error.css('opacity', '1')
+    } else {
+        $error.css('opacity', '0')
+            //Add Tasks to list
+        $ul.append($newTodo)
+        $newTodo.append($checkbox, $li, $x);
+        $li.addClass('task')
+    }
 
     //Complete Task Style
     $checkbox.click(function() {
-        if ($checkbox.is(":checked") == true) {
+        if ($checkbox.is(":checked")) {
             $newTodo.addClass('done')
             $li.addClass('completed');
-            $checkbox.val(true)
+
         } else {
             $newTodo.removeClass('done')
             $li.removeClass('completed');
-            $checkbox.val(false)
+
         }
     });
 
