@@ -4,8 +4,10 @@ let $button = $('button');
 let $ul = $('ul')
 let $error = $('#error-message');
 
-
-
+$(document).ready(function() {
+    console.log('hello')
+    getTodos();
+});
 //Create Task
 $button.on('click', (e) => {
     //Create a li element
@@ -23,41 +25,100 @@ $button.on('click', (e) => {
         $ul.append($newTodo)
         $newTodo.append($checkbox, $li, $x);
         $li.addClass('task')
+            // $checkbox.attr('id', 'isDone')
     }
-
     //Complete Task Style
     $checkbox.click(function() {
         if ($checkbox.is(":checked")) {
+            console.log('Is checked')
             $newTodo.addClass('done')
             $li.addClass('completed');
 
         } else {
             $newTodo.removeClass('done')
             $li.removeClass('completed');
-
         }
     });
 
-    //Clear input field
-    $input.val("")
+    saveLocalTodos($li.text())
 
     //Eliminate Task
     $x.click(function() {
         $(this).parent().remove();
     });
 
-});
+
+    //Clear input field
+    $input.val("")
+
+})
 
 
-//Working on adding local storage  *Still figuring this out lol * 
-//Push Task to todoList array for Local Storage
-//let $todoList = []
-//let $taskNumber = 0;
+function saveLocalTodos(todo) {
+    //Is there todos in local storage already?
+    let todos;
+    if (localStorage.getItem("todos") === null) {
+        todos = [];
+    } else {
+        todos = JSON.parse(localStorage.getItem("todos"));
+    }
+
+    todos.push(todo);
+    localStorage.setItem("todos", JSON.stringify(todos));
+
+}
+
+function getTodos() {
+    //Is there todos in local storage already?
+    let todos;
+    if (localStorage.getItem("todos") === null) {
+        todos = [];
+    } else {
+        todos = JSON.parse(localStorage.getItem("todos"));
+    }
+
+    todos.forEach(e => {
+        //Create a li element
+        let $newTodo = $('<div></div>').addClass('todo')
+        let $li = $('<li></li>').text($input.val())
+        let $checkbox = $('<input type="checkbox" class="box" />');
+        let $x = $('<span>&times;</span>').addClass('close')
 
 
-//  $todoList.push({
-//     id: $taskNumber,
-//     task: $li.text(),
-//     completed: $checkbox.val()
-// })
-//localStorage.setItem("task", JSON.stringify($todoList));
+        $.each(todos, function(index, value) {
+            $ul.append($newTodo)
+            $newTodo.append($checkbox, $li, $x)
+            $li.text(e)
+            $li.addClass('task')
+
+        })
+
+
+        //Eliminate Task
+        $x.click(function() {
+            $(this).parent().remove();
+            localStorage.removeItem(this);
+            console.log('this')
+        });
+
+
+        //If checkbox is checked, remove element 
+        $('.box').change(function(e) {
+            if ($(this).is(':checked')) {
+                // $(this).parent('div').remove();
+                $(this).parent('div').addClass('done')
+                $(this).next().addClass('completed');
+            };
+            if ($(this).is(':checked') == false) {
+                // $(this).parent('div').remove();
+                $(this).parent('div').removeClass('done')
+                $(this).next().removeClass('completed');
+            };
+        });
+
+
+
+    });
+
+
+}
