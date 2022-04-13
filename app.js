@@ -3,6 +3,8 @@ let $input = $('input');
 let $button = $('button');
 let $ul = $('ul')
 let $error = $('#error-message');
+var $deleteAll = $('#clear-todos')
+var $allTodos = $('.todos')
 
 $(document).ready(function() {
     console.log('hello')
@@ -16,9 +18,11 @@ $button.on('click', (e) => {
     let $checkbox = $('<input type="checkbox" class="box" />');
     let $x = $('<span>&times;</span>').addClass('close')
 
-    //If input is empty, show error message
+
+    //If input is empty, show error message and don't save empty val in locaStorage
     if ($input.val() == 0) {
         $error.css('opacity', '1')
+        return;
     } else {
         $error.css('opacity', '0')
             //Add Tasks to list
@@ -68,14 +72,19 @@ function saveLocalTodos(todo) {
 
 }
 
+
+//Get and show the todos in localStorage
 function getTodos() {
-    //Is there todos in local storage already?
-    let todos;
+
+    var todos = [];
+    // This worked before
     if (localStorage.getItem("todos") === null) {
-        todos = [];
+        localStorage.setItem('todos', '[]');
     } else {
         todos = JSON.parse(localStorage.getItem("todos"));
     }
+
+
 
     todos.forEach(e => {
         //Create a li element
@@ -97,7 +106,7 @@ function getTodos() {
         //Eliminate Task
         $x.click(function() {
             $(this).parent().remove();
-            localStorage.removeItem(this);
+            // localStorage.removeItem(this);
             console.log('this')
         });
 
@@ -115,10 +124,11 @@ function getTodos() {
                 $(this).next().removeClass('completed');
             };
         });
-
-
-
     });
-
-
 }
+
+$deleteAll.on('click', (e) => {
+    $ul.children().remove()
+    window.localStorage.clear()
+    $error.css('opacity', '0')
+})
