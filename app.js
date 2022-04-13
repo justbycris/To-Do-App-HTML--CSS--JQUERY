@@ -106,8 +106,28 @@ function getTodos() {
         //Eliminate Task
         $x.click(function() {
             $(this).parent().remove();
-            // localStorage.removeItem(this);
-            console.log('this')
+
+            //TRY NUMBER 1
+            todos.splice(index, 1);
+            localStorage.setItem('todos', JSON.stringify(todos));
+
+            //TRY NUMBER 2
+            // const deletedTask = $(this).val();
+            // let todos = JSON.parse(localStorage.getItem("todos"));
+
+            // todos = todos.filter(prodId => prodId !== deletedTask);
+            // localStorage.setItem("todos", JSON.stringify(todos));
+            // console.log('this')
+
+            //EXAMPLE TO DELETE INDEX ITEM FROM KEY ON LOCALSTORAGE
+            // $('.delete_item').on('click', function() {
+            //     const deletedProduct = $(this).val();
+            //     let products = JSON.parse(localStorage.getItem("products"));
+
+            //     products = my_product.filter(prodId => prodId !== deletedProduct);
+
+            //     localStorage.setItem("products", JSON.stringify(products));
+            //  });
         });
 
 
@@ -131,4 +151,6 @@ $deleteAll.on('click', (e) => {
     $ul.children().remove()
     window.localStorage.clear()
     $error.css('opacity', '0')
+
+
 })
