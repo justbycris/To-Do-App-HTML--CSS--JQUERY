@@ -6,6 +6,11 @@ let $error = $('#error-message');
 var $deleteAll = $('#clear-todos')
 var $allTodos = $('.todos')
 
+
+//UPDATE MAY 16: Remove todos from local sotrage does not work everytime and it 
+//removes the todo value in wrong order, not the one that is clicked. 
+
+
 $(document).ready(function() {
     console.log('hello')
     getTodos();
@@ -51,11 +56,11 @@ $button.on('click', (e) => {
         $(this).parent().remove();
     });
 
-
     //Clear input field
     $input.val("")
 
 })
+
 
 
 function saveLocalTodos(todo) {
@@ -103,31 +108,17 @@ function getTodos() {
         })
 
 
-        //Eliminate Task
+        //Eliminate Task from UI and localStorage
         $x.click(function() {
+            let removeTodo = (index) => {
+                let todosData = localStorage.getItem("todos");
+                todos = JSON.parse(todosData);
+                todos.splice(index, 1);
+                localStorage.setItem("todos", JSON.stringify(todos));
+                console.log('removed')
+            }
+            removeTodo();
             $(this).parent().remove();
-
-            //TRY NUMBER 1
-            todos.splice(index, 1);
-            localStorage.setItem('todos', JSON.stringify(todos));
-
-            //TRY NUMBER 2
-            // const deletedTask = $(this).val();
-            // let todos = JSON.parse(localStorage.getItem("todos"));
-
-            // todos = todos.filter(prodId => prodId !== deletedTask);
-            // localStorage.setItem("todos", JSON.stringify(todos));
-            // console.log('this')
-
-            //EXAMPLE TO DELETE INDEX ITEM FROM KEY ON LOCALSTORAGE
-            // $('.delete_item').on('click', function() {
-            //     const deletedProduct = $(this).val();
-            //     let products = JSON.parse(localStorage.getItem("products"));
-
-            //     products = my_product.filter(prodId => prodId !== deletedProduct);
-
-            //     localStorage.setItem("products", JSON.stringify(products));
-            //  });
         });
 
 
@@ -145,12 +136,4 @@ function getTodos() {
             };
         });
     });
-}
-
-$deleteAll.on('click', (e) => {
-    $ul.children().remove()
-    window.localStorage.clear()
-    $error.css('opacity', '0')
-
-
-})
+};
